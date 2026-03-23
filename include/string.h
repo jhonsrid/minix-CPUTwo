@@ -93,7 +93,9 @@ __aconst char *strsignal(int);
 __END_DECLS
 
 #if defined(_NETBSD_SOURCE)
+#if !defined(_KERNEL) && !defined(_STANDALONE)
 #include <strings.h>		/* for backwards-compatibilty */
+#endif
 __BEGIN_DECLS
 void	*memmem(const void *, size_t, const void *, size_t);
 char	*strcasestr(const char *, const char *);

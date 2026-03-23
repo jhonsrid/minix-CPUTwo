@@ -666,6 +666,7 @@ MACHINE=vax		MACHINE_ARCH=vax
 MACHINE=x68k		MACHINE_ARCH=m68k
 MACHINE=zaurus		MACHINE_ARCH=arm	DEFAULT
 MACHINE=zaurus		MACHINE_ARCH=earm	ALIAS=ezaurus
+MACHINE=cputwo		MACHINE_ARCH=cputwo	DEFAULT
 '
 
 # getarch -- find the default MACHINE_ARCH for a MACHINE,

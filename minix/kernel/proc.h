@@ -118,6 +118,11 @@ struct proc {
 	 */
   } p_vmrequest;
 
+  struct {
+	vir_bytes	pf_virtual;	/* page fault virtual address */
+	u32_t		pf_flags;	/* page fault flags */
+  } p_pagefault;
+
   int p_found;	/* consistency checking variables */
   int p_magic;		/* check validity of proc pointers */
 

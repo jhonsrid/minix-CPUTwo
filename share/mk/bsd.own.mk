@@ -191,7 +191,7 @@ MAKECONF?=	/etc/mk.conf
 #
 # CPU model, derived from MACHINE_ARCH
 #
-MACHINE_CPU=	${MACHINE_ARCH:C/mipse[bl]/mips/:C/mips64e[bl]/mips/:C/sh3e[bl]/sh3/:S/coldfire/m68k/:S/m68000/m68k/:C/arm.*/arm/:C/earm.*/arm/:S/earm/arm/:S/powerpc64/powerpc/}
+MACHINE_CPU=	${MACHINE_ARCH:C/mipse[bl]/mips/:C/mips64e[bl]/mips/:C/sh3e[bl]/sh3/:S/coldfire/m68k/:S/m68000/m68k/:C/arm.*/arm/:C/earm.*/arm/:S/earm/arm/:S/powerpc64/powerpc/:S/cputwo/cputwo/}
 
 #
 # Subdirectory used below ${RELEASEDIR} when building a release
@@ -242,7 +242,7 @@ USE_COMPILERCRTSTUFF?=	yes
 USE_COMPILERCRTSTUFF?=	no
 .endif
 
-.if ${MKLLVM:Uno} == "yes" && (${MACHINE_ARCH} == "i386" || ${MACHINE_ARCH} == "x86_64")
+.if ${MKLLVM:Uno} == "yes" && (${MACHINE_ARCH} == "i386" || ${MACHINE_ARCH} == "x86_64" || ${MACHINE_ARCH} == "cputwo")
 HAVE_LIBGCC?=	no
 .else
 HAVE_LIBGCC?=	yes
@@ -864,6 +864,15 @@ NOPROFILE=	# defined
 .endif
 
 #
+# The cputwo port requires an external toolchain (llvm-project-CPUTwo).
+#
+.if ${MACHINE_ARCH} == "cputwo"
+TOOLCHAIN_MISSING=	yes
+MKPICLIB=	no
+NOPROFILE=	# defined
+.endif
+
+#
 # The ia64 port is incomplete.
 #
 .if ${MACHINE_ARCH} == "ia64"
@@ -1076,6 +1085,7 @@ MKCOMPATMODULES:=	no
 .if ${MACHINE_ARCH} == "mips64eb" || ${MACHINE_ARCH} == "mips64el" || \
     (${MACHINE_CPU} == "arm" && ${MACHINE_ARCH:M*hf*} == "") || \
     ${MACHINE_ARCH} == "coldfire" || \
+    ${MACHINE_ARCH} == "cputwo" || \
     ${MACHINE} == "emips"
 MKSOFTFLOAT?=	yes
 .endif
@@ -1171,7 +1181,7 @@ _MKVARS.no= \
 #MINIX-specific vars
 _MKVARS.no+= \
 	MKIMAGEONLY MKSMALL MKBITCODE MKSRC
-.if !empty(MACHINE_ARCH:Mearm*)
+.if !empty(MACHINE_ARCH:Mearm*) || ${MACHINE_ARCH} == "cputwo"
 _MKVARS.no+= \
 	MKWATCHDOG MKACPI MKAPIC MKDEBUGREG MKINSTALLBOOT MKPCI
 .endif

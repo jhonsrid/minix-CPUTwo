@@ -38,7 +38,10 @@
 #define _C_LABEL_STRING(x)	x
 #endif
 
-#if __STDC__
+#if defined(_STANDALONE)
+/* __asm renaming not needed in standalone mode */
+#define	___RENAME(x)	/* nothing */
+#elif __STDC__
 #define	___RENAME(x)	__asm(___STRING(_C_LABEL(x)))
 #else
 #ifdef __LEADING_UNDERSCORE

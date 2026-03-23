@@ -14,7 +14,9 @@ void sef_exit(int status);
 #define sef_receive(src, m_ptr) sef_receive_status(src, m_ptr, NULL)
 
 /* SEF Debug. */
+#if !defined(_KERNEL)
 #include <stdio.h>
+#endif
 #define sef_dprint                      printf
 #define sef_debug_begin()               (void)(NULL)
 #define sef_debug_end()                 (void)(NULL)

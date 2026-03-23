@@ -412,7 +412,7 @@
 #error "No function renaming possible"
 #endif /* __GNUC__ */
 #else /* _STANDALONE || _KERNEL */
-#define	__RENAME(x)	no renaming in kernel or standalone environment
+#define	__RENAME(x)	/* nothing - renaming not needed in kernel */
 #endif
 
 /*

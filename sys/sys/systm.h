@@ -68,7 +68,9 @@ extern int doing_shutdown;	/* shutting down */
 
 extern const char copyright[];	/* system copyright */
 extern char cpu_model[];	/* machine/cpu model name */
+#ifndef __minix
 extern char machine[];		/* machine type */
+#endif
 extern char machine_arch[];	/* machine architecture */
 extern const char osrelease[];	/* short system version */
 extern const char ostype[];	/* system type */
@@ -224,7 +226,9 @@ int	vsprintf(char *, const char *, va_list) __printflike(2, 0);
 
 int	vsnprintf(char *, size_t, const char *, va_list) __printflike(3, 0);
 
+#ifndef __minix
 int	humanize_number(char *, size_t, uint64_t, const char *, int);
+#endif
 
 void	twiddle(void);
 void	banner(void);

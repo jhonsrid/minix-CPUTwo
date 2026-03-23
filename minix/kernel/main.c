@@ -59,6 +59,13 @@ void bsp_finish_booting(void)
   /* it should point somewhere */
   get_cpulocal_var(bill_ptr) = get_cpulocal_var_ptr(idle_proc);
   get_cpulocal_var(proc_ptr) = get_cpulocal_var_ptr(idle_proc);
+#ifdef __cputwo__
+  /* Set global proc_ptr alias for assembly code before any interrupts fire */
+  {
+    extern struct proc *__cputwo_proc_ptr;
+    __cputwo_proc_ptr = get_cpulocal_var(proc_ptr);
+  }
+#endif
   announce();				/* print MINIX startup banner */
 
   /*
@@ -135,7 +142,7 @@ void kmain(kinfo_t *local_cbi)
 
    /* We have done this exercise in pre_init so we expect this code
       to simply work! */
-   machine.board_id = get_board_id_by_name(env_get(BOARDVARNAME));
+   machine.board_id = 0;  /* CPUTwo: no board detection needed */
 #ifdef __arm__
   /* We want to initialize serial before we do any output */
   arch_ser_init();
@@ -152,14 +159,20 @@ void kmain(kinfo_t *local_cbi)
   cstart();
 
   BKL_LOCK();
- 
+
    DEBUGEXTRA(("main()\n"));
 
    proc_init();
 
+#ifdef __cputwo__
+   /* CPUTwo: no boot modules loaded by QEMU, skip boot process setup */
+   bsp_finish_booting();
+   NOT_REACHABLE;
+#else
    if(NR_BOOT_MODULES != kinfo.mbi.mi_mods_count)
    	panic("expecting %d boot processes/modules, found %d",
 		NR_BOOT_MODULES, kinfo.mbi.mi_mods_count);
+#endif
 
   /* Set up proc table entries for processes in boot image. */
   for (i=0; i < NR_BOOT_PROCS; ++i) {

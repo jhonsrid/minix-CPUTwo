@@ -46,7 +46,9 @@ int env_parse(const char *env, const char *fmt, int field,
 #define fkey_events(fkeys, sfkeys) fkey_ctl(FKEY_EVENTS, (fkeys), (sfkeys))
 int fkey_ctl(int req, int *fkeys, int *sfkeys);
 
+#ifndef _KERNEL
 int printf(const char *fmt, ...);
+#endif
 void kputc(int c);
 __dead void panic(const char *fmt, ...)
      __attribute__((__format__(__printf__,1,2)));

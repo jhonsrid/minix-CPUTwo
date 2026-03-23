@@ -152,9 +152,11 @@ int clock_settime(clockid_t, const struct timespec *)
     __RENAME(__clock_settime50);
 int nanosleep(const struct timespec *, struct timespec *)
     __RENAME(__nanosleep50);
+#if !defined(_KERNEL)
 int timer_gettime(timer_t, struct itimerspec *) __RENAME(__timer_gettime50);
-int timer_settime(timer_t, int, const struct itimerspec * __restrict, 
+int timer_settime(timer_t, int, const struct itimerspec * __restrict,
     struct itimerspec * __restrict) __RENAME(__timer_settime50);
+#endif
 #endif
 int timer_create(clockid_t, struct sigevent * __restrict,
     timer_t * __restrict);
